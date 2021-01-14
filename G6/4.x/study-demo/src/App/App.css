@@ -1,0 +1,103 @@
+.app {
+  display: flex;
+  flex-direction: row;
+  text-align: center;
+  height: 100vh;
+}
+
+.app-header {
+  height: 100vh;
+  width: 36vw;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  color: white;
+  background-color: #282c34;
+}
+
+.app-body {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.app-link {
+  color: #61dafb;
+  margin: 0 16px;
+}
+.app-link:hover {
+  color: #6efb61;
+}
+
+.app-logo-box {
+  height: 20vmin;
+}
+.app-logo {
+  height: 16vmin;
+  pointer-events: none;
+}
+.app-logo-g6 {
+  height: 14vmin;
+  pointer-events: none;
+}
+
+.app-router {
+  margin-top: 30px;
+}
+.app-router > a {
+  font-size: calc(10px + 1vmin);
+  margin: 16px;
+  color: #61dafb;
+  text-decoration: none;
+}
+
+.app-router > a:hover {
+  color: #6efb61;
+}
+
+.demo-box-ref {
+  border: 1px solid #e3e3e3;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  justify-content: center;
+}
+.demo-box-ref > canvas {
+  border-bottom: 1px dashed #e3e3e3;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .app-logo {
+    animation: app-logo-spin infinite 20s linear;
+  }
+
+  .app-logo-g6 {
+    animation: app-logo-scale infinite 8s linear;
+  }
+}
+
+@keyframes app-logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes app-logo-scale {
+  0% {
+    height: 14vmin;
+  }
+  50% {
+    height: 20vmin;
+  }
+  100% {
+    height: 14vmin;
+  }
+}
+
