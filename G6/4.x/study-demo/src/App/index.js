@@ -7,7 +7,8 @@ import {
 } from "react-router-dom";
 import {
   Base,
-  Register
+  Register,
+  Layout
 } from '../components/'
 import logo from './logo.svg';
 import g6Example from './g6-example.png';
@@ -43,6 +44,7 @@ function App() {
         <div className="app-router">
           <Link to="/">基础示例</Link>
           <Link to="/register">自定义节点、边</Link>
+          <Link to="/layout">图布局</Link>
         </div>
       </header>
       <div className="app-body">
@@ -52,6 +54,9 @@ function App() {
           </Route>
           <Route path="/register" exact>
             <Register />
+          </Route>
+          <Route path="/layout" exact>
+            <Layout />
           </Route>
         </Switch>
       </div>

@@ -10,6 +10,7 @@ const RegisterG6 = (props) => {
     } else if (props.type === 'combo') {
       G6.registerCombo(props.name, props.config, props.extend);
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   return null;
 };
