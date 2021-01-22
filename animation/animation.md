@@ -2,6 +2,12 @@
 
 > 各种动画
 
+## 动画方案
+
+- `css3 transition / animation` - 实现过渡动画
+- `setInterval / setTimeout` - 通过设置一个间隔时间来不断的改变图像的位置
+- `requestAnimationFrame` - 通过一个回调函数来改变图像位置，由系统来决定这个回调函数的执行时机，比定时修改的性能更好，不存在失帧现象
+
 ## 优秀库，插件
 
 - [popmotion](https://popmotion.io/): 一个功能的，灵活的JavaScript动态库
