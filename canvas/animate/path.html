@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <script src="./easing.js"></script>
+</head>
+<body>
+  <div>
+    <button id="executeButton" onclick="handleExecute()">执行</button>
+    <button id="executeBrokenButton" onclick="handleExecuteBroken()">执行折线动画</button>
+    <button id="executeCircleButton" onclick="handleExecuteCircle()">执行圆动画</button>
+  </div>
+  <canvas id="myCanvas" width="1000" height="600"></canvas>
+</body>
+<script>
+  function animate1(ctx) {
+    // 定义起点和终点的坐标
+    const startX = 100
+    const startY = 100
+    const endX = 400
+    const endY = 500
+    let prevX = startX
+    let prevY = startY
+    let nextX
+    let nextY
+    // 第一帧执行的时间
+    let startTime;
+     // 记录执行次数
+     let count = 0;
+    // 期望动画持续的时间
+    const duration = 1000
+
+    /*
+    * 动画帧绘制方法.
+    * currentTime是requestAnimation执行回调方法step时会传入的一个执行时的时间(由performance.now()获得).
+    * */
+    const step = (currentTime) => {
+      // 第一帧绘制时记录下开始的时间
+      !startTime && (startTime = currentTime)
+      // 已经过去的时间(ms)
+      const timeElapsed = currentTime - startTime
+      // 动画执行的进度 {0,1}
+      const progress = Math.min(timeElapsed / duration, 1)
+
+      // 绘制方法
+      const draw = () => {
+        // 创建新的路径
+        ctx.beginPath()
+        // 创建子路径,并将起点移动到上一帧绘制到达的坐标点
+        ctx.moveTo(prevX, prevY)
+        // 计算这一帧中线段应该到达的坐标点,并且将prevX/Y更新为此值给下一帧使用.
+        prevX = nextX = startX + (endX - startX) * progress
+        prevY = nextY = startY + (endY - startY) * progress
+
+        if (count % 2 === 0) { // 偶数画
+          ctx.lineWidth = 20 * progress
+          ctx.strokeStyle = `rgba(${171 * (1 - progress) + 81}, ${160 * progress}, ${255},1)`
+          // 用直线将刚刚moveTo中的点连接到(nextX,nextY)上
+          ctx.lineTo(nextX, nextY)
+          // 把这一帧的路径绘制出来
+          ctx.stroke()
+        }
+      }
+      draw()
+
+      if (progress < 1) {
+        count ++;
+        requestAnimationFrame(step)
+      } else {
+        console.log('动画执行完毕')
+      }
+    }
+
+    requestAnimationFrame(step)
+  }
+
+  function animate2(ctx) {
+     // 定义起点和终点的坐标
+     const startX = 100
+        const startY = 100
+        const endX = 600
+        const endY = 500
+        let nextX
+        let nextY
+
+        // 第一帧执行的时间
+        let startTime;
+       
+        // 期望动画持续的时间
+        const duration = 1000
+
+        // 创建路径
+        ctx.beginPath()
+        // 创建一条子路径,把新的子路径起始点移动到(prevX,prevY)坐标.
+        ctx.moveTo(startX, startY)
+
+        /*
+        * 动画帧绘制方法.
+        * currentTime是requestAnimation执行回调方法step时会传入的一个执行时的时间(由performance.now()获得).
+        * */
+        const step = (currentTime) => {
+            // 清空区域
+            // ctx.clearRect(startX - 4, startY - 4, Math.abs(endX - startY) + 8, Math.abs(endY - startY) + 8)
+            // 第一帧绘制时记录下开始的时间
+            !startTime && (startTime = currentTime)
+            // 已经过去的时间(ms)
+            const timeElapsed = currentTime - startTime
+            // 动画执行的进度 {0,1}
+            const progress = Math.min(timeElapsed / duration, 1)
+
+            // 绘制方法
+            const draw = () => {
+                // 计算这一帧中线段应该到达的坐标点
+                nextX = startX + (endX - startX) * progress
+                nextY = startY + (endY - startY) * progress
+                // 用直线连接子路径的最后的点到(nextX,nextY)坐标
+                ctx.lineTo(nextX, nextY)
+                // 绘制路径(所有子路径都会被绘制一次)
+                ctx.stroke()
+            }
+            draw()
+
+            if (progress < 1) {
+                requestAnimationFrame(step)
+            } else {
+                console.log('动画执行完毕')
+            }
+        }
+
+        requestAnimationFrame(step)
+  }
+
+  function handleExecute() {
+    // 获取canvas元素
+    const canvas = document.querySelector('#myCanvas')
+    // 获取canvas渲染上下文
+    const ctx = canvas.getContext('2d')
+
+    // 设置线条样式
+    ctx.strokeStyle = 'rgba(81, 160, 255,1)'
+    ctx.lineWidth = 3
+
+    // 创建路径
+    ctx.beginPath()
+    // 移动笔触到(100,100)坐标处
+    ctx.moveTo(100,100)
+    // 把线连接到(700,700)这个位置
+    ctx.lineTo(200,500)
+    // 把刚刚的路径绘制出来
+    ctx.stroke()
+
+    /*
+      方案 1: 一段段画，模拟动画, 可以模拟虚线
+    */
+    animate1(ctx);
+
+    /*
+      方案 2: 使用同一条路径，每一个动画帧绘制的直线长度逐渐增加，直到达到我们期望的长度。 但需要每次绘制清空画布 （覆盖颜色加深等），清空也可能导致画布其他图案出现问题
+    */
+    // animate2(ctx);
+  }
+  
+  // 折线动画
+  function handleExecuteBroken() {
+        const canvas = document.querySelector('#myCanvas')
+        const ctx = canvas.getContext('2d')
+
+        // 设置线条样式
+        ctx.lineWidth = 7
+        ctx.lineJoin = 'round'
+        ctx.lineCap = 'round'
+
+        // 顺序定义折线上各个转折点的坐标
+        const keyPoints = [
+            {x: 250, y: 200},
+            {x: 550, y: 200},
+            {x: 250, y: 500},
+            {x: 550, y: 500},
+            {x: 250, y: 200}
+        ]
+        let prevX = keyPoints[0].x
+        let prevY = keyPoints[0].y
+        let nextX
+        let nextY
+        // 第一帧执行的时间
+        let startTime;
+        // 期望动画持续的时间
+        const duration = 900
+
+
+        // 动画被切分成若干段,每一段所占总进度的比例
+        const partProportion = 1 / (keyPoints.length - 1)
+        // 缓存绘制第n段线段的n值,为了在进行下一段绘制前把这一段线段的末尾补齐
+        let lineIndexCache = 1
+
+        /*
+        * 动画帧绘制方法.
+        * currentTime是requestAnimation执行回调方法step时会传入的一个执行时的时间(由performance.now()获得).
+        * */
+        const step = (currentTime) => {
+            // 第一帧绘制时记录下开始的时间
+            !startTime && (startTime = currentTime)
+            // 已经过去的时间(ms)
+            const timeElapsed = currentTime - startTime
+            // 动画执行的进度 {0,1}
+            let progress = Math.min(timeElapsed / duration, 1)
+            // 加入二次方缓动函数
+            progress = Easing.Quadratic.In(progress)
+
+            // 描述当前所绘制的是第几段线段
+            const lineIndex = Math.min(Math.floor(progress / partProportion) + 1, keyPoints.length - 1)
+
+            //  当前线段的进度 {0,1}
+            const partProgress = (progress - (lineIndex - 1) * partProportion) / partProportion
+
+            // 绘制方法
+            const draw = () => {
+                ctx.strokeStyle = `rgba(${81 + 175 * Math.abs(1 - progress * 2)}, ${160 - 160 * Math.abs(progress * 2 - 1)}, ${255},${1})`
+                ctx.beginPath()
+                ctx.moveTo(prevX, prevY)
+                // 当绘制下一段线段前,把上一段末尾缺失的部分补齐
+                if (lineIndex !== lineIndexCache) {
+                    ctx.lineTo(keyPoints[lineIndex - 1].x, keyPoints[lineIndex - 1].y)
+                    lineIndexCache = lineIndex
+                }
+                prevX = nextX = ~~(keyPoints[lineIndex - 1].x + ((keyPoints[lineIndex]).x - keyPoints[lineIndex - 1].x) * partProgress)
+                prevY = nextY = ~~(keyPoints[lineIndex - 1].y + ((keyPoints[lineIndex]).y - keyPoints[lineIndex - 1].y) * partProgress)
+                ctx.lineTo(nextX, nextY)
+                ctx.stroke()
+            }
+            draw()
+
+            if (progress < 1) {
+                requestAnimationFrame(step)
+            } else {
+                console.log('动画执行完毕')
+            }
+        }
+
+        requestAnimationFrame(step)
+    }
+
+    // 圆
+    function handleExecuteCircle() {
+        // 获取canvas元素
+        const canvas = document.querySelector('#myCanvas')
+        // 获取canvas渲染上下文
+        const ctx = canvas.getContext('2d')
+
+        // 设置线条样式
+        ctx.lineWidth = 7
+        ctx.lineJoin = 'round'
+        ctx.lineCap = 'round'
+
+        // 定义圆心的坐标点
+        // const center = {x: ctx.canvas.width / 2, y: ctx.canvas.height / 2}
+        const center = {x: 400, y: 400}
+        // 定义圆的半径大小
+        const radius = 200
+        // 定义起点和终点的角度
+        const startAngle = 0
+        const endAngle = 2 * Math.PI
+        let prevAngle = startAngle
+        let nextAngle
+        // 第一帧执行的时间
+        let startTime;
+        // 期望动画持续的时间
+        const duration = 900
+
+        /*
+        * 动画帧绘制方法.
+        * currentTime是requestAnimation执行回调方法step时会传入的一个执行时的时间(由performance.now()获得).
+        * */
+        const step = (currentTime) => {
+            // 第一帧绘制时记录下开始的时间
+            !startTime && (startTime = currentTime)
+            // 已经过去的时间(ms)
+            const timeElapsed = currentTime - startTime
+            // 动画执行的进度 {0,1}
+            let progress = Math.min(timeElapsed / duration, 1)
+            progress = Easing.Cubic.In(progress)
+            // 绘制方法
+            const draw = () => {
+                // 创建新的路径
+                ctx.beginPath()
+                // 计算这一帧中圆弧应该到达的角度
+                nextAngle = startAngle + (endAngle - startAngle) * progress
+                // 创建一段圆弧
+                ctx.arc(center.x, center.y, radius, prevAngle, nextAngle, false)
+                // 设置渐变的颜色
+                ctx.strokeStyle = `rgba(${81 + 171 * Math.abs(1 - progress * 2)}, ${160 - 160 * Math.abs(1 - progress * 2)}, ${255},1)`
+                // 把这一帧的圆弧绘制出来
+                ctx.stroke()
+                //将prevAngle更新为这一帧中的nextAngle给下一帧使用
+                prevAngle = nextAngle
+            }
+            draw()
+
+            if (progress < 1) {
+                requestAnimationFrame(step)
+            } else {
+                console.log('动画执行完毕')
+            }
+        }
+
+        requestAnimationFrame(step)
+    }
+
+</script>
+</html>
