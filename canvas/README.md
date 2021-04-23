@@ -1,6 +1,6 @@
 # Canvas
 
-> `HTML5`规范中支持的画布`位图技术`: `<canvas />`
+> `HTML5`规范中支持的画布`位图技术`: `<canvas />`; Canvas是基于状态的绘制
 
 ```html
 <!doctype html>
@@ -27,8 +27,10 @@
 </html>
 ```
 
-canvas中定义width、height跟在style中定义width和height是不同的，canvas标签的width和height是画布实际宽度和高度，绘制的图形都是在这个上面。
+**注意**：canvas中定义width、height跟在style中定义width和height是不同的，canvas标签的width和height是画布实际宽度和高度，绘制的图形都是在这个上面。
 而style的width和height是canvas在浏览器中被渲染的高度和宽度。如果canvas的width和height没指定或值不正确，就被设置成默认值`(width:300px，height:150px)`。
+
+canvas 画布的左上角为笛卡尔坐标系的原点，且y轴的正方向向下，x轴的正方向向右。
 
 ## 参考
 
