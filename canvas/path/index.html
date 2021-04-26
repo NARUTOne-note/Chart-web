@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>绘制折线</title>
+</head>
+<body>
+  <div id="canvas-warp">
+      <canvas id="canvas" style="border: 1px solid #aaaaaa; display: block; margin: 50px auto;">
+          你的浏览器居然不支持Canvas？！赶快换一个吧！！
+      </canvas>
+  </div>
+  
+  <script>
+      window.onload = function(){
+          var canvas = document.getElementById("canvas");
+          canvas.width = 800;
+          canvas.height = 600;
+          var context = canvas.getContext("2d");
+        
+          // 线段1
+          context.beginPath();
+          context.moveTo(100,100);
+          context.lineTo(300,300);
+          context.lineTo(100,500);
+          context.lineWidth = 5;
+          context.strokeStyle = "red";
+          context.stroke();
+  
+          // 线段2
+          context.beginPath();
+          context.moveTo(300,100);
+          context.lineTo(500,300);
+          context.lineTo(300,500);
+          context.lineWidth = 5;
+          context.strokeStyle = "blue";
+          context.stroke();
+  
+          // 线段3
+          context.beginPath();
+          context.moveTo(500,100);
+          context.lineTo(700,300);
+          context.lineTo(500,500);
+          context.lineWidth = 5;
+          context.strokeStyle = "black";
+          context.stroke();
+
+          // path矩形
+          context.beginPath();
+          context.moveTo(150,50);
+          context.lineTo(650,50);
+          context.lineTo(650,550);
+          context.lineTo(150,550);
+          context.lineTo(150,50);     // 绘制最后一笔使图像闭合
+          context.closePath();        // 使用closePath()闭合图形
+          context.fillStyle = "yellow";   //选择油漆桶的颜色
+          context.lineWidth = 5;
+          context.strokeStyle = "black";
+          context.fill();                 //确定填充
+          context.stroke();
+
+          drawRect(context, 150, 50, 50, 50, "red", 5, "blue");
+          drawRect(context, 250, 50, 50, 50, "green", 5, "red");
+      }
+      function drawRect(cxt, x, y, width, height, fillColor, borderWidth, borderColor){
+        cxt.beginPath();
+        // 绘制矩形
+        cxt.rect(x, y, width, height);
+        //cxt.closePath();    可以不用closePath()
+
+        cxt.lineWidth = borderWidth;
+        cxt.strokeStyle = borderColor;
+        cxt.fillStyle = fillColor;
+
+        cxt.fill();
+        cxt.stroke();
+      }
+  </script>
+</body>
+</html>
