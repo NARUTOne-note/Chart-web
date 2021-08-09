@@ -1,0 +1,9 @@
+.graph-box {
+  position: relative;
+}
+#mini-map {
+  position: absolute;
+  right: 1px;
+  bottom: 1px;
+  z-index: 99;
+}
