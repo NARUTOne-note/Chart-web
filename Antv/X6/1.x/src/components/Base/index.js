@@ -116,7 +116,7 @@ const BaseDemo = () => {
     const graph = new Graph({
       container: document.getElementById('base-graph'),
       width: 900,
-      height: 600,
+      height: 620,
       panning: { // 画布平移
         enabled: true,
         eventTypes: ['leftMouseDown']
