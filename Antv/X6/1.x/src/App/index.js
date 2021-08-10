@@ -43,8 +43,8 @@ function App() {
         </div>
         <div className="app-router">
           <Link to="/">基础示例</Link>
-          <Link to="/register">自定义节点、边</Link>
-          <Link to="/layout">更多</Link>
+          <Link to="/register">自定义</Link>
+          <Link to="/more">更多</Link>
         </div>
       </header>
       <div className="app-body">
