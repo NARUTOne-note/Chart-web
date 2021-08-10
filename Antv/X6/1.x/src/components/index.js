@@ -1,9 +1,9 @@
 import Base from './Base';
 import Register from './Register';
-import Layout from './Layout';
+import More from './More';
 
 export {
   Base,
   Register,
-  Layout
+  More
 };
